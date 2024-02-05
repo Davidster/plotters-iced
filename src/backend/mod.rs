@@ -6,6 +6,7 @@
 
 use std::collections::HashSet;
 
+use iced_graphics::text::{cosmic_text, font_system};
 use iced_widget::{
     canvas,
     core::{
@@ -224,7 +225,7 @@ where
             content: text.to_owned(),
             position: pos,
             color: cvt_color(&style.color()),
-            size: style.size() as f32,
+            size: iced_core::Pixels(style.size() as f32),
             line_height: Default::default(),
             font,
             horizontal_alignment,
@@ -253,25 +254,6 @@ where
         self.frame.fill_text(text);
 
         Ok(())
-    }
-
-    #[inline]
-    fn estimate_text_size<S: BackendTextStyle>(
-        &self,
-        text: &str,
-        style: &S,
-    ) -> Result<(u32, u32), DrawingErrorKind<Self::ErrorType>> {
-        let font = style_to_font(style);
-        let bounds = self.frame.size();
-        let size = self.backend.measure(
-            text,
-            style.size() as f32,
-            Default::default(),
-            font,
-            bounds,
-            Default::default(),
-        );
-        Ok((size.width as u32, size.height as u32))
     }
 
     #[inline]
